@@ -24,10 +24,9 @@ class Board
     y_diff = (piece1.col - piece2.col).abs
     x_diff == y_diff
   end
-
 end
 
-class Pieces
+class Piece
   attr_reader :row, :col
 
   def initialize(position)
@@ -48,12 +47,11 @@ class Queens
 
   def initialize(queen_locations={white: WHITE_QUEEN_DEFAULT, black: BLACK_QUEEN_DEFAULT})
       raise ArgumentError, "Two queens cannot occupy same space!" if queen_locations[:white] == queen_locations[:black]
-      @white_queen = Pieces.new(queen_locations[:white])
-      @black_queen = Pieces.new(queen_locations[:black])
+      @white_queen = Piece.new(queen_locations[:white])
+      @black_queen = Piece.new(queen_locations[:black])
       @board = Board.new
-      place_piece_on_board(@white_queen, WHITE_QUEEN_MARKER)
-      place_piece_on_board(@black_queen, BLACK_QUEEN_MARKER)
-      
+      @board.place_piece(@white_queen, WHITE_QUEEN_MARKER)
+      @board.place_piece(@black_queen, BLACK_QUEEN_MARKER)
   end
 
   def white
@@ -71,17 +69,9 @@ class Queens
   def attack?
     @board.same_row?(@white_queen, @black_queen) || @board.same_diag?(@white_queen, @black_queen)
   end
-
-  private
-
-  def place_piece_on_board(piece, marker)
-    @board.place_piece(piece, marker)
-  end 
-
 end
 
-queens = Queens.new
-puts queens.to_s
+
 
 
 
